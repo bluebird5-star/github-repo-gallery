@@ -1,4 +1,6 @@
 //profile information
+
+const repoList = document.querySelector (".repo-list")
 const overview = document.querySelector (".overview");
 const username = "bluebird5-star";
 
@@ -30,4 +32,23 @@ div.innerHTML =`
     </div>
     `;
 overview.append(div);
+getRepo();
+
+};
+
+const getRepo = async function (){
+  const repoInfo = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoData = await repoInfo.json();
+
+displayRepo(repoData);
+};
+
+
+const displayRepo = function (repos) {
+  for (const repo of repos) {
+    const item =document.createElement("li");
+    item.classList.add("repo");
+    item.innerHTML = `<h3>${repo.name}</h3>`;
+    repoList.append(item);
+  }
 };
